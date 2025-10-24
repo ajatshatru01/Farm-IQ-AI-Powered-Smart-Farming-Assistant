@@ -347,8 +347,8 @@ def disease_prediction():
             return render_template(
                 "disease-result.html", 
                 prediction=remedy, 
-                confidence= confidence,
-                prediction_class= prediction_class,
+                confidence=confidence,
+                prediction_class=prediction_class,
                 title=title
             )
 
