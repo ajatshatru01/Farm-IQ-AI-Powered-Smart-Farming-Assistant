@@ -15,7 +15,6 @@ from flask import Flask, flash, redirect, render_template, request, url_for
 from markupsafe import Markup
 from PIL import Image
 from torchvision import transforms
-
 # --- CHANGE: Import custom modules more cleanly
 from utils.disease import disease_dic
 from utils.fertilizer import fertilizer_dic
@@ -157,10 +156,12 @@ def predict_image(img_bytes, model=disease_model):
     if model is None:
         raise RuntimeError("Disease model is not loaded.")
 
-    transform = transforms.Compose([
-        transforms.Resize(256),
-        transforms.ToTensor(),
-    ])
+    transform = transforms.Compose(
+        [
+            transforms.Resize(256),
+            transforms.ToTensor(),
+        ]
+    )
 
     image = Image.open(io.BytesIO(img_bytes)).convert("RGB")
     img_t = transform(image)
@@ -174,7 +175,6 @@ def predict_image(img_bytes, model=disease_model):
     prediction_index = preds[0].item()
     confidence = top_prob[0].item() * 100
     return disease_classes[prediction_index], round(confidence, 2)
-
 
 
 # ===============================================================================================
@@ -345,11 +345,11 @@ def disease_prediction():
                 )
             )
             return render_template(
-                "disease-result.html", 
-                prediction=remedy, 
+                "disease-result.html",
+                prediction=remedy,
                 confidence=confidence,
                 prediction_class=prediction_class,
-                title=title
+                title=title,
             )
 
         except Exception as e:
